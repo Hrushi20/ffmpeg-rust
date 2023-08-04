@@ -44,7 +44,7 @@ WASMEDGE_PLUGIN_PATH takes the path of the shared plugin created in [WasmEdge-FF
 In linux, the path is WASMEDGE_PLUGIN_PATH=/usr/local/lib/wasmedge/libwasmedgePluginWasmEdgeFfmpeg.so
 
 Result-
-(Result)(https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/results.png)
+[Result](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/results.png)
 
 Reference-
-(Witc)(https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/witc.png)
+[Witc](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/witc.png)
