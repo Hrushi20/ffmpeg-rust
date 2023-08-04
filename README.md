@@ -44,7 +44,7 @@ WASMEDGE_PLUGIN_PATH takes the path of the shared plugin created in [WasmEdge-FF
 In linux, the path is WASMEDGE_PLUGIN_PATH=/usr/local/lib/wasmedge/libwasmedgePluginWasmEdgeFfmpeg.so
 
 Result-
-(Result)(./assets/results.png)
+(Result)(assets/results.png)
 
 Reference-
-(Witc)(./assets/witc.png)
+(Witc)(assets/witc.png)
