@@ -39,12 +39,12 @@ cargo build --target wasm32-wasi --release
 WASMEDGE_PLUGIN_PATH=/usr/local/lib/wasmedge/libwasmedgePluginWasmEdgeFfmpeg.dylib wasmedge --dir ./. target/wasm32-wasi/release/ffmpegRust.wasm
 ```
 
-WASMEDGE_PLUGIN_PATH takes the path of the shared plugin created in [WasmEdge-FFMPEG](https://github.com/Hrushi20/WasmEdge-FFMPEG#readme).
+WASMEDGE_PLUGIN_PATH takes the path of the shared plugin created in [WasmEdge-FFMPEG](https://github.com/Hrushi20/WasmEdge-FFMPEG#readme?raw=true).
 
 In linux, the path is WASMEDGE_PLUGIN_PATH=/usr/local/lib/wasmedge/libwasmedgePluginWasmEdgeFfmpeg.so
 
 Result-
-[Result](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/results.png)
+![Result](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/results.png)
 
 Reference-
-[Witc](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/witc.png)
+![Witc](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/witc.png)
