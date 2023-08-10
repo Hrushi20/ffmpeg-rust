@@ -41,11 +41,13 @@ WASMEDGE_PLUGIN_PATH=/usr/local/lib/wasmedge/ wasmedge --dir ./. target/wasm32-w
 
 WASMEDGE_PLUGIN_PATH takes the path of the shared plugin created in [WasmEdge-FFMPEG](https://github.com/Hrushi20/WasmEdge-FFMPEG#readme?raw=true).
 
-Reference-
-![Witc](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/witc.png)
 
 Result-
+
 ![Result](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/results.png)
 
 The resulting video is split into grayscale images using Ffmpeg C API
+
+Generated Rust File-
+![Witc](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/witc.png)
 
