@@ -2,14 +2,26 @@
 
 This repository is the solution to [Pretest #2703](https://github.com/WasmEdge/WasmEdge/discussions/2703). 
 
-
 The solution is split into two repositories-
 1. [WasmEdge-FFMPEG](https://github.com/Hrushi20/WasmEdge-FFMPEG) 
 <br> Contains Ffmpeg Plugin that acts as a bridge between WasmEdge and Ffmpeg C API.
 
 2. [ffmpeg-rust](https://github.com/Hrushi20/ffmpeg-rust)<br> Uses the WasmEdgeFfmpeg plugin built in `WasmEdge-FFMPEG` and executes Ffmpeg C API functions.
 
+### Project
+
 The wasm function reads the `assets/small_bunny_1080p_60fps.mp4` video file and uses the FFmpeg C API to convert the video into grayscale image frames. The frames are generated in assets dir.
+
+![Architecture](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/architecture.png)
+
+| Video Info   |   Value | 
+---------------|----------|
+| Video Duration | 2 sec |
+| Frames Per Second | 60 |
+| No. of frames generated | 2 * 60 = 120 |
+| Container Format | mp4 |
+| Pixel Format | YUV420p |
+
 
 ### Note-
 First, follow the steps in [WasmEdge-FFMPEG](https://github.com/Hrushi20/WasmEdge-FFMPEG#readme) repository to build the plugin shared library.
@@ -24,9 +36,9 @@ Witc is a compiler which generates rust code for *.wit files.
 
 ### 2. Generate C API in Rust using Witc
 ```
-    witc plugin wasmedge_ffmpeg.wit > src/generated.rs
+witc plugin wasmedge_ffmpeg.wit > src/generated.rs
 ```
-A generated.rs file is created in src directory.
+generated.rs file is created in src directory.
 
 ### 3. Build Project-
 Use cargo to build the project into .wasm
@@ -49,8 +61,8 @@ Result-
 ![Frame68](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/frame68.png)
 ![Frame119](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/frame119.png)
 
-The resulting video is split into grayscale images using Ffmpeg C API in assets dir.
-The image generated is pgm format. Use appropriate image view to see the image.
+The video is split into grayscale images using Ffmpeg C API in assets dir.
+The image generated is pgm format. Use appropriate image viewer to see the image.
 
 Generated Rust File-
 ![Witc](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/witc.png)
