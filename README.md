@@ -9,7 +9,7 @@ The solution is split into two repositories-
 
 2. [ffmpeg-rust](https://github.com/Hrushi20/ffmpeg-rust)<br> Uses the WasmEdgeFfmpeg plugin built in `WasmEdge-FFMPEG` and executes Ffmpeg C API functions.
 
-The wasm function reads the `assets/test.wav` file and calls the Ffmpeg C API to read the meta data of the file and logs this data in console.
+The wasm function reads the `assets/small_bunny_1080p_60fps.mp4` video file and uses the FFmpeg C API to convert the video into grayscale image frames. The frames are generated in assets dir.
 
 ### Note-
 First, follow the steps in [WasmEdge-FFMPEG](https://github.com/Hrushi20/WasmEdge-FFMPEG#readme) repository to build the plugin shared library.
@@ -36,12 +36,10 @@ cargo build --target wasm32-wasi --release
 
 ### 4. Execute .wsm file using WasmEdge-
 ```
-WASMEDGE_PLUGIN_PATH=/usr/local/lib/wasmedge/libwasmedgePluginWasmEdgeFfmpeg.dylib wasmedge --dir ./. target/wasm32-wasi/release/ffmpegRust.wasm
+WASMEDGE_PLUGIN_PATH=/usr/local/lib/wasmedge/ wasmedge --dir ./. target/wasm32-wasi/release/ffmpegRust.wasm
 ```
 
 WASMEDGE_PLUGIN_PATH takes the path of the shared plugin created in [WasmEdge-FFMPEG](https://github.com/Hrushi20/WasmEdge-FFMPEG#readme?raw=true).
-
-In linux, the path is WASMEDGE_PLUGIN_PATH=/usr/local/lib/wasmedge/libwasmedgePluginWasmEdgeFfmpeg.so
 
 Reference-
 ![Witc](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/witc.png)
@@ -49,5 +47,5 @@ Reference-
 Result-
 ![Result](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/results.png)
 
-The above image prints meta data of test.wav file using Ffmpeg C API
+The resulting video is split into grayscale images using Ffmpeg C API
 

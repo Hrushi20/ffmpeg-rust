@@ -15,3 +15,7 @@ avcodecReceiveFrame : func(frame:u32,codecContext:u32) -> u32
 avPacketUnref : func(packet:u32) -> u32
 frameData : func(frame:u32,buf:list<u8>) -> u32
 frameDimensions : func(frame:u32,buf:list<u8>) -> u32
+avformatCloseInput : func (avFormatCtx:u32) -> u32
+avPacketFree : func (packet:u32) -> u32
+avFrameFree : func (frame:u32) -> u32
+avcodecFreeContext : func (codecContext:u32) -> u32

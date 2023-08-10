@@ -1,26 +1,28 @@
-use std::{mem::MaybeUninit, num::ParseIntError, process::exit, vec, time::Duration, fs::{self, File}, io::Write, fmt::format };
+#![allow(non_snake_case)]
+#![allow(unused_assignments,unused_variables,unused_comparisons)]
+use std::{mem::MaybeUninit, fs::File, io::Write };
 
 mod generated;
 
-
-static mut image_number:u32 = 0;
+static mut IMAGE_NUMBER:u32 = 0;
 
 fn main() {
     unsafe {
         let mut avFormatContext = MaybeUninit::<u32>::uninit();
-        generated::avformatAllocContext(avFormatContext.as_mut_ptr() as u32);
+        let res = generated::avformatAllocContext(avFormatContext.as_mut_ptr() as u32);
+        println!("AvFormat Alloc Context: Res{} ",res);
 
         let file = "assets/small_bunny_1080p_60fps.mp4";
         
-        let res =generated::avformatOpenInput(avFormatContext.as_mut_ptr() as u32, file.as_ptr(), file.len());
-        println!("Res: {}",res);
+        let res = generated::avformatOpenInput(avFormatContext.as_mut_ptr() as u32, file.as_ptr(), file.len());
+        println!("Read Input file: {}; Res:{}",file,res);
 
         let no_of_streams = generated::avformatFindStreamInfo(avFormatContext.as_mut_ptr() as u32);
-        println!("Res: {}",no_of_streams);
+        println!("Number of streams: {}",no_of_streams);
 
 
         let mut avCodec:MaybeUninit<u32> = MaybeUninit::<u32>::uninit(); 
-        let mut avCodecParameters:MaybeUninit<u32> = MaybeUninit::<u32>::uninit();
+        let avCodecParameters:MaybeUninit<u32> = MaybeUninit::<u32>::uninit();
         let mut video_stream_index:i32 = -1 ;
 
         for i in 0..no_of_streams {
@@ -38,7 +40,7 @@ fn main() {
                     pLocalCodecParameters = pLocalCodecParameters;
                 },
                 1 => {
-                    println!("This is audio ");
+                    println!("Skipping audio stream.");
                 },
                 _=> println!("Inavaid type"),
             };
@@ -51,21 +53,25 @@ fn main() {
 
         let pCodecContext = MaybeUninit::<u32>::uninit();
         let res = generated::avcodecAllocContext3(avCodec.as_ptr() as u32, pCodecContext.as_ptr() as u32);
+        println!("Res:{} Allocated Codec Context Based on file",res);
 
         let res = generated::avcodecParametersToContext(pCodecContext.as_ptr() as u32, avCodecParameters.as_ptr() as u32);
+        println!("Res:{} Set Parameters to Codec contex on file",res);
 
         generated::avcodecOpen2(avCodec.as_ptr() as u32, pCodecContext.as_ptr() as u32);
 
 
-        let frame = MaybeUninit::<u32>::uninit();
-        generated::avFrameAlloc(frame.as_ptr() as u32);
+        let mut frame = MaybeUninit::<u32>::uninit();
+        let res = generated::avFrameAlloc(frame.as_ptr() as u32);
+        println!("Res:{} Frame Allocated to read decoded bytes",res);
 
 
-        let packet = MaybeUninit::<u32>::uninit();
+        let mut packet = MaybeUninit::<u32>::uninit();
         let res = generated::avPacketAlloc(packet.as_ptr() as u32);
+        println!("Res:{} Packet Allocated to read encoded bytes",res);
 
         let mut response = 0;
-        let mut how_many_packets_to_process = 8;
+        let how_many_packets_to_process = 8;
 
         while generated::avReadFrame(frame.as_ptr() as u32, packet.as_ptr() as u32) >= 0 {
             if generated::getStreamIndex(packet.as_ptr() as u32) as i32  == video_stream_index {
@@ -78,25 +84,31 @@ fn main() {
             generated::avPacketUnref(packet.as_ptr() as u32);
 
         }
+
+        println!("Genereated Grayscale Frames in assets dir");
+        generated::avformatCloseInput(avFormatContext.as_mut_ptr() as u32);
+        generated::avPacketFree(packet.as_mut_ptr() as u32);
+        generated::avFrameFree(frame.as_mut_ptr() as u32);
+        generated::avcodecFreeContext(avCodec.as_mut_ptr() as u32);
+        println!("Deallocated Pointers");
     };
 }
 
-unsafe fn  decode(packet:*const u32,pCodecContext:*const u32,frame:*const u32)->u32{
+unsafe fn decode(packet:*const u32,pCodecContext:*const u32,frame:*const u32)->u32{
     let mut response = generated::avcodecSendPacket(packet as u32, pCodecContext as u32);
     if response == 100 {return response};
 
-    while response >= 0 {
+    while response != 100 {
         response = generated::avcodecReceiveFrame(frame as u32, pCodecContext as u32);
 
         if response == 20 {
             break;
         }else if response == 100 {
-            println!("Error while receiving Frame");
             return response;
         }
-        if response >= 0 {
-            let filename = format!("assets/frame-{}.pgm",image_number);
-            image_number+=1;
+        if response != 100 {
+            let filename = format!("assets/frame-{}.pgm",IMAGE_NUMBER);
+            IMAGE_NUMBER+=1;
 
             // Remove snprintf and write to file. Done... Also check for yellow thing or RGB.
 
@@ -118,19 +130,19 @@ unsafe fn  decode(packet:*const u32,pCodecContext:*const u32,frame:*const u32)->
 
             generated::frameData(frame as u32, frame_buf.as_mut_ptr() as *mut u8, frame_buf.len());
 
-            saveGrayscaleFrame(&filename,frame_buf,dimensions);
+            save_grayscale_frame(&filename,frame_buf,dimensions);
         }
     }
     // std::thread::sleep(Duration::from_millis(1000));
     return 0;
 }
 
-unsafe fn saveGrayscaleFrame(filename:&String,frame_buf:Vec<u8>, dimensions:Vec<u32>){
+unsafe fn save_grayscale_frame(filename:&String,frame_buf:Vec<u8>, dimensions:Vec<u32>){
     let mut f = File::create(filename).unwrap();
 
     let header = format!("P5\n{} {}\n{}\n",dimensions[1],dimensions[2],255);
-    f.write_all(header.as_bytes());
+    let _ = f.write_all(header.as_bytes());
     
-    f.write_all(&frame_buf);
+    let _ = f.write_all(&frame_buf);
 
 }
