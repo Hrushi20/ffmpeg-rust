@@ -45,11 +45,12 @@ WASMEDGE_PLUGIN_PATH takes the path of the shared plugin created in [WasmEdge-FF
 Result-
 
 ![Result](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/results.png)
-![Frame0](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/frame-0.pgm)
-![Frame68](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/frame-68.pgm)
-![Frame119](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/frame-119.pgm)
+![Frame0](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/frame-0.png)
+![Frame68](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/frame-68.png)
+![Frame119](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/frame-119.png)
 
 The resulting video is split into grayscale images using Ffmpeg C API in assets dir.
+The image generated is pgm format. Use appropriate image view to see the image.
 
 Generated Rust File-
 ![Witc](https://github.com/Hrushi20/ffmpeg-rust/blob/main/assets/witc.png)
