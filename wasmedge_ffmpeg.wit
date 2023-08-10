@@ -1,1 +1,17 @@
-avFormatOpenInput : func (file:string) -> u32;
+avformatAllocContext : func (avFormatCtx:u32) -> u32
+avformatOpenInput : func (avFormat:u32,file:string) -> u32 
+avformatFindStreamInfo : func (avFormatCtx:u32) -> u32
+avcodecParameters : func (avFormat:u32,idx:u32,codecParamter:u32) -> u32
+avcodecFindDecoder : func(codecParameter:u32,codecInput:u32) -> u32
+avcodecAllocContext3 : func(avCodec:u32,codecContext:u32) -> u32
+avcodecParametersToContext : func(codeParameter:u32,codecContext:u32) -> u32
+avcodecOpen2 : func(codec:u32,codecContext:u32) -> u32
+avFrameAlloc : func(frame:u32) -> u32
+avPacketAlloc : func(packet:u32) -> u32
+avReadFrame : func(frame:u32,pkt:u32) -> u32
+getStreamIndex : func(packet:u32) -> u32
+avcodecSendPacket : func(packet:u32,codecContext:u32) -> u32
+avcodecReceiveFrame : func(frame:u32,codecContext:u32) -> u32
+avPacketUnref : func(packet:u32) -> u32
+frameData : func(frame:u32,buf:list<u8>) -> u32
+frameDimensions : func(frame:u32,buf:list<u8>) -> u32
